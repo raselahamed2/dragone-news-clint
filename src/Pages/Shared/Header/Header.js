@@ -1,12 +1,23 @@
-import React from 'react';
-import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import React, { useContext } from 'react';
+import { Button, Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { FaUser } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 import LeftSideNav from '../LeftSideNav/LeftSideNav';
 
 const Header = () => {
+  const {user, LogOut} = useContext(AuthContext)
+
+  const handleLogOut = () => {
+    LogOut()
+    .then(() =>{})
+    .catch(error => console.error(error))
+  }
+
     return (
         <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
         <Container>
-          <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+          <Navbar.Brand><Link to='/'>Dragon News</Link></Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
@@ -25,9 +36,26 @@ const Header = () => {
               </NavDropdown>
             </Nav>
             <Nav>
-              <Nav.Link href="#deets">More deets</Nav.Link>
+              <Nav.Link href="#deets"> 
+              {
+                user?.uid ? 
+                <>
+                    <span>{user?.displayName}</span>
+                    <Button variant="light" onClick={handleLogOut}>Log Out</Button>
+                </>
+                : 
+                <>
+                    <Link to='/login'>Login</Link>
+                    <Link to='/register'>Register</Link>
+                </>
+              }
+              </Nav.Link>
               <Nav.Link eventKey={2} href="#memes">
-                Dank memes
+                {
+                  user?.photoURL ? 
+                  <Image style={{height: '30px'}} roundedCircle src={user.photoURL}></Image>
+                  : <FaUser/>
+                }
               </Nav.Link>
             </Nav>
             <div className='d-lg-none'>
