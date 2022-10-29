@@ -3,8 +3,9 @@ import { Card, Image } from 'react-bootstrap';
 import { FaEye, FaRegBookmark, FaShareAlt, FaStar } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
+
 const NewSummaryCard = ({ news }) => {
-    const {title, _id, author, details, total_view, rating, image_url} = news;
+    const {title, author, details, total_view, rating, image_url} = news;
     console.log(news);
     return (
         <div>
@@ -32,7 +33,7 @@ const NewSummaryCard = ({ news }) => {
         <Card.Img variant="top" src={image_url}/>
         <Card.Text>
         {
-                details.length > 250 ? 
+                details > 250 ? 
                 <p>{details.slice(0, 250) + '...'} <Link to={`/news/${news._id}`}>Read More</Link></p>
                 : <p>{details}</p>
         }
